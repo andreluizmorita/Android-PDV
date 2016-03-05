@@ -3,17 +3,19 @@ package br.com.webmorita.pdv.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+
+import java.util.List;
 
 import br.com.webmorita.pdv.R;
+import br.com.webmorita.pdv.domain.model.Produto;
+import se.emilsjolander.sprinkles.Query;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +28,36 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+                Intent intent = new Intent(MainActivity.this, CadastroNovoActivity.class);
+                startActivity(intent);
             }
         });
+
+
+
+    }
+
+    @Override
+    protected void onRestart()
+    {
+        super.onRestart();
+
+        List<Produto> produtos = Query.all(Produto.class).get().asList();
+
+        if(produtos != null){
+            for(Produto p:produtos){
+                Log.d("MainActivity", p.getDescricao());
+//                fab.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Snackbar.make(view, p.getDescricao(), Snackbar.LENGTH_LONG)
+//                                .setAction("Action", null).show();
+//                    }
+//                });
+            }
+        }
     }
 
     @Override
@@ -52,13 +80,11 @@ public class MainActivity extends AppCompatActivity {
         }else if (id == R.id.action_novo) {
 
             Intent intent = new Intent(MainActivity.this, CadastroNovoActivity.class);
-
             startActivity(intent);
 
         }else if (id == R.id.action_edit) {
-            Log.d("MainActivity","Selecionou editar produto");
-
-            return true;
+            Intent intent = new Intent(MainActivity.this, EditarProdutoActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);

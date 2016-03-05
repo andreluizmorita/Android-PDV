@@ -2,6 +2,7 @@ package br.com.webmorita.pdv.ui;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +19,7 @@ import java.io.IOException;
 
 import br.com.webmorita.pdv.R;
 import br.com.webmorita.pdv.domain.model.Produto;
+import br.com.webmorita.pdv.domain.util.Base64Util;
 import br.com.webmorita.pdv.domain.util.ImageInputHelper;
 import butterknife.Bind;
 import butterknife.OnClick;
@@ -63,7 +65,9 @@ public class CadastroNovoActivity extends BaseActivity implements ImageInputHelp
                     produto.setPreco(0.0);
                 }
 
-                produto.setFoto("");
+                Bitmap image= ((BitmapDrawable) imageViewFoto.getDrawable()).getBitmap();
+
+                produto.setFoto(Base64Util.encodeTobase64(image));
                 produto.save();
 
                 Snackbar.make(view,  "Produto "+ editTextDescricao.getText().toString()+" cadastro com sucesso" , Snackbar.LENGTH_LONG)
@@ -71,8 +75,6 @@ public class CadastroNovoActivity extends BaseActivity implements ImageInputHelp
 
                 finish();
 
-//                Snackbar.make(view,  editTextUnidade.getText().toString() , Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
             }
         });
     }
